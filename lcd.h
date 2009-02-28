@@ -87,7 +87,7 @@
 #define LCD_RS_PIN       4            /**< pin  for RS line         */
 #define LCD_RW_PORT      PORTC        /**< port for RW line         */
 #define LCD_RW_PIN       5            /**< pin  for RW line         */
-#define LCD_E_PORT       PORTD        /**< port for Enable line     */
+#define LCD_E_PORT       PORTB        /**< port for Enable line     */
 #define LCD_E_PIN        0            /**< pin  for Enable line     */
 
 #elif defined(__AVR_AT90S4414__) || defined(__AVR_AT90S8515__) || defined(__AVR_ATmega64__) || \
