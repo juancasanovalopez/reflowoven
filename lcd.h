@@ -42,14 +42,14 @@
  *  @name  Definitions for MCU Clock Frequency
  *  Adapt the MCU clock frequency in Hz to your target. 
  */
-#define XTAL 16000000              /**< clock frequency in Hz, used to calculate delay timer */
+#define XTAL 8000000              /**< clock frequency in Hz, used to calculate delay timer */
 
 /** 
  *  @name  Definitions for Display Size 
  *  Change these definitions to adapt setting to your display
  */
 #define LCD_LINES           2     /**< number of visible lines of the display */
-#define LCD_DISP_LENGTH    20     /**< visibles characters per line of the display */
+#define LCD_DISP_LENGTH    16     /**< visibles characters per line of the display */
 #define LCD_LINE_LENGTH  0x40     /**< internal line length of the display    */
 #define LCD_START_LINE1  0x00     /**< DDRAM address of first char of line 1 */
 #define LCD_START_LINE2  0x40     /**< DDRAM address of first char of line 2 */
@@ -87,8 +87,8 @@
 #define LCD_RS_PIN       4            /**< pin  for RS line         */
 #define LCD_RW_PORT      PORTC        /**< port for RW line         */
 #define LCD_RW_PIN       5            /**< pin  for RW line         */
-#define LCD_E_PORT       PORTC        /**< port for Enable line     */
-#define LCD_E_PIN        6            /**< pin  for Enable line     */
+#define LCD_E_PORT       PORTD        /**< port for Enable line     */
+#define LCD_E_PIN        0            /**< pin  for Enable line     */
 
 #elif defined(__AVR_AT90S4414__) || defined(__AVR_AT90S8515__) || defined(__AVR_ATmega64__) || \
       defined(__AVR_ATmega8515__)|| defined(__AVR_ATmega103__) || defined(__AVR_ATmega128__) || \
