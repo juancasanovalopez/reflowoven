@@ -20,9 +20,9 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
-#include "lcd.h"
+#include "MAX6675.h"
+#include <avr/interrupt.h>
 
-#include "inavr.h"
 
 
 char*    TextString    = "AVR communicating via the SPI"+0x00;
@@ -30,8 +30,7 @@ char*    PtrToStrChar;                  	// Pointer to certain Character in Stri
 char     ClearToSend   = 1;             	// String send complete bit
 
 // Interrupt Routine Master Mode (interrupt controlled)
-#pragma vector=SPI_STC_vect
-__interrupt void ISR_SPI (void)
+ISR(SPI_STC_vect)
 {
         PtrToStrChar++;                 	// Point to next Char in String
         if (*PtrToStrChar != 0)         	// if end not reached
@@ -73,6 +72,8 @@ uint16_t MAX6675ReadTemp(void)
                 SPDR = *PtrToStrChar;           // sending first Char of new String
                 ClearToSend = 0;                // block initiation of new transmissions
         }
+
+		return 0;
 }
 
 

@@ -16,17 +16,22 @@
 //**************************************************************************
 
 #include "MAX6675.h"
+#include "lcd.h"
 
 
 
-void main (void)
+int main (void)
 {
 
         
-  MAX6675Init();                      // Initialization (polling)
+  //MAX6675Init();                      // Initialization (polling)
+  lcd_init(LCD_DISP_ON);
+
+  lcd_puts("Hello World");
 
   while (1)
   {
+    lcd_puts("Hello World");
                
   }
 }
