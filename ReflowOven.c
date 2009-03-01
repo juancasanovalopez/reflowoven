@@ -20,11 +20,19 @@
 #include "MAX6675.h"
 #include "lcd.h"
 #include "usart1.h"
+#include "key.h"
+#include "switch.h"
 #include "ReflowOven.h"
 #include <stdlib.h>
 #include <util/delay.h>
 #include <string.h>
 
+
+
+
+extern unsigned char keyChangeDown;
+extern unsigned char keyChangeUp;
+extern unsigned char keyChangePrev;
 
 int main (void)
 {
@@ -41,7 +49,7 @@ int main (void)
 
   //uart_init(UART_BAUD_SELECT(9600,16000000L));
   USART_Init( 103 ); /* Set the baudrate to 9,600 bps using a 16.0 MHz crystal */
-
+  InitSwitch();
 
   sei();
 
@@ -69,13 +77,35 @@ int main (void)
 	lcd_puts(" ");
 
 	//uart_putc('T');
-    USART_Transmit('T');
-	USART_Transmit((temp >> 8) & 0x00FF);
-	USART_Transmit(temp & 0x00FF);
+    //USART_Transmit('T');
+	USART_Transmit((temp >> 2) & 0x00FF);
+	//USART_Transmit(temp & 0x00FF);
 	//uart_putc(10);
 	//uart_putc(20);
 
+	KeyChange();
+
+	if( (keyChangeDown & 0x01) == 0x01)
+	{
+	  SwitchOn(1);
+	  SwitchOn(2);
+	  SwitchOn(3);
+	}
+
+	if( (keyChangeDown & 0x02) == 0x02)
+	{
+	  SwitchOff(1);
+	  SwitchOff(2);
+	  SwitchOff(3);
+	}
+	
+	  
+
+
 	_delay_ms(1000.0);
+
+
+
 
 
 
