@@ -19,10 +19,10 @@
  * $Date: 2009-03-02 12:46:13 +0100 (to, 16 feb 2006) $
  *****************************************************************************/
 
-
-
-
 #include <avr/interrupt.h>
+#include <stdlib.h>
+#include <util/delay.h>
+#include <string.h>
 
 #include "MAX6675.h"
 #include "lcd.h"
@@ -30,11 +30,6 @@
 #include "key.h"
 #include "switch.h"
 #include "ReflowOven.h"
-#include <stdlib.h>
-#include <util/delay.h>
-#include <string.h>
-
-
 
 
 extern unsigned char keyChangeDown;
@@ -158,6 +153,8 @@ int main (void)
   //uart_init(UART_BAUD_SELECT(9600,16000000L));
   USART_Init( 103 ); /* Set the baudrate to 9,600 bps using a 16.0 MHz crystal */
   InitSwitch();
+
+  	Timer0_init();
 
   Init();
 
