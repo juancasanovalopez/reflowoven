@@ -30,11 +30,16 @@
 #include "key.h"
 #include "switch.h"
 #include "ReflowOven.h"
+#include "encoder.h"
 
 
 extern unsigned char keyChangeDown;
 extern unsigned char keyChangeUp;
 extern unsigned char keyChangePrev;
+
+
+int16_t temperaturVal;
+
 
 #include "pid.h"
 
@@ -72,6 +77,7 @@ struct PID_DATA pidData;
 
 /*! \brief Timer interrupt to control the sampling interval
  */
+ /*
 #pragma vector = TIMER0_OVF_vect
 __interrupt void TIMER0_OVF_ISR( void )
 {
@@ -83,9 +89,11 @@ __interrupt void TIMER0_OVF_ISR( void )
     i = 0;
   }
 }
+*/
 
 /*! \brief Init of PID controller demo
  */
+ /*
 void Init(void)
 {
   pid_Init(K_P * SCALING_FACTOR, K_I * SCALING_FACTOR , K_D * SCALING_FACTOR , &pidData);
@@ -95,6 +103,7 @@ void Init(void)
   TIMSK0 = (1<<TOIE0);
   TCNT0 = 0;
 }
+*/
 
 /*! \brief Read reference value.
  *
@@ -154,9 +163,9 @@ int main (void)
   USART_Init( 103 ); /* Set the baudrate to 9,600 bps using a 16.0 MHz crystal */
   InitSwitch();
 
-  	Timer0_init();
+  	//Timer0_init();
 
-  Init();
+  InitEncoder(); 
 
   sei();
 
@@ -183,12 +192,22 @@ int main (void)
 
 	lcd_puts(" ");
 
+	lcd_gotoxy(0,1);
+
+    temperaturVal += ReadEncoderChange();
+
+ 	memset(tempString,0,16);
+	itoa(temperaturVal, tempString, 10);
+	lcd_puts(tempString);
+
 	//uart_putc('T');
     //USART_Transmit('T');
-	USART_Transmit((temp >> 2) & 0x00FF);
+	//USART_Transmit((temp >> 2) & 0x00FF);
 	//USART_Transmit(temp & 0x00FF);
 	//uart_putc(10);
 	//uart_putc(20);
+
+/*
 
 	KeyChange();
 
@@ -205,10 +224,10 @@ int main (void)
 	  SwitchOff(2);
 	  SwitchOff(3);
 	}
-	
-	_delay_ms(1000.0);
+*/	
+	_delay_ms(10.0);
 
-
+/*
 
 	    // Run PID calculations once every PID timer timeout
     if(gFlags.pidTimer)
@@ -223,7 +242,7 @@ int main (void)
       gFlags.pidTimer = FALSE;
     }
 
-               
+   */            
   }
 }
 
