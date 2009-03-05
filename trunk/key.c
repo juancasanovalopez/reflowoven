@@ -24,8 +24,6 @@ unsigned char keyChangeUp;
 unsigned char keyChangePrev;
 
 
-
-
 unsigned char KeyRead(void)
 {
   return (PIND & 0b00011100) >> 2;
