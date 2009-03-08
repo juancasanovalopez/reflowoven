@@ -31,6 +31,7 @@
 #include "switch.h"
 #include "ReflowOven.h"
 #include "encoder.h"
+#include "timer.h"
 
 
 extern unsigned char keyChangeDown;
@@ -39,6 +40,13 @@ extern unsigned char keyChangePrev;
 
 
 int16_t temperaturVal;
+
+uint8_t updatePID;
+
+uint8_t outputVal[MAX_OUTPUT] = {20,40,60,80};
+uint8_t outputPin[MAX_OUTPUT] = {4,5,6,7};
+
+int16_t temp;
 
 
 #include "pid.h"
@@ -49,7 +57,7 @@ int16_t temperaturVal;
  * need to be modified to adapt to the application at hand
  */
 //! \xrefitem todo "Todo" "Todo list"
-#define K_P     1.00
+#define K_P     3.00
 //! \xrefitem todo "Todo" "Todo list"
 #define K_I     0.00
 //! \xrefitem todo "Todo" "Todo list"
@@ -91,19 +99,7 @@ __interrupt void TIMER0_OVF_ISR( void )
 }
 */
 
-/*! \brief Init of PID controller demo
- */
- /*
-void Init(void)
-{
-  pid_Init(K_P * SCALING_FACTOR, K_I * SCALING_FACTOR , K_D * SCALING_FACTOR , &pidData);
 
-  // Set up timer, enable timer/counte 0 overflow interrupt
-  TCCR0A = (1<<CS00);
-  TIMSK0 = (1<<TOIE0);
-  TCNT0 = 0;
-}
-*/
 
 /*! \brief Read reference value.
  *
@@ -112,7 +108,7 @@ void Init(void)
  */
 int16_t Get_Reference(void)
 {
-  return 8;
+  return temperaturVal;
 }
 
 /*! \brief Read system process value
@@ -121,7 +117,7 @@ int16_t Get_Reference(void)
  */
 int16_t Get_Measurement(void)
 {
-  return 4;
+  return temp / 4;
 }
 
 /*! \brief Set control input to system
@@ -131,7 +127,18 @@ int16_t Get_Measurement(void)
  */
 void Set_Input(int16_t inputValue)
 {
-  ;
+  if(inputValue >= 255)
+    inputValue = 255;
+
+
+  if(inputValue < 0)
+    inputValue = 0;
+
+
+  outputVal[0] = inputValue;
+  outputVal[1] = inputValue;
+  outputVal[2] = inputValue;
+  outputVal[3] = 50;
 }
 
 
@@ -148,7 +155,7 @@ void Set_Input(int16_t inputValue)
  */
 int main (void)
 {
-  int16_t temp;
+
   int16_t referenceValue, measurementValue, inputValue;
   char tempString[16];
         
@@ -166,6 +173,12 @@ int main (void)
   	//Timer0_init();
 
   InitEncoder(); 
+  InitTimer();
+
+  pid_Init(K_P * SCALING_FACTOR, K_I * SCALING_FACTOR , K_D * SCALING_FACTOR , &pidData);
+
+
+  updatePID = FALSE;
 
   sei();
 
@@ -173,9 +186,26 @@ int main (void)
   {
     lcd_home();
 
-    lcd_puts("Hello: ");
+   
 
-	temp = MAX6675ReadTemp();
+
+    if(updatePID)
+	{
+	  temp = MAX6675ReadTemp();
+      
+
+      referenceValue = Get_Reference();
+      measurementValue = Get_Measurement();
+
+      inputValue = pid_Controller(referenceValue, measurementValue, &pidData);
+
+      Set_Input(inputValue);
+
+	  updatePID = FALSE;
+
+    }
+
+	 lcd_puts("PV: ");
 
 
 	memset(tempString,0,16);
@@ -194,11 +224,33 @@ int main (void)
 
 	lcd_gotoxy(0,1);
 
+	lcd_puts("SP: ");
+
     temperaturVal += ReadEncoderChange();
+	if(temperaturVal < MIN_TEMP)
+	  temperaturVal = MIN_TEMP;
+
+	if(temperaturVal > MAX_TEMP)
+	  temperaturVal = MAX_TEMP;
+
 
  	memset(tempString,0,16);
 	itoa(temperaturVal, tempString, 10);
 	lcd_puts(tempString);
+
+
+
+    lcd_puts(" ");
+
+	lcd_puts("OUT: ");
+
+ 	memset(tempString,0,16);
+	utoa(outputVal[0] , tempString, 10);
+	lcd_puts(tempString);
+
+    lcd_puts(" ");
+
+	 
 
 	//uart_putc('T');
     //USART_Transmit('T');
@@ -229,18 +281,6 @@ int main (void)
 
 /*
 
-	    // Run PID calculations once every PID timer timeout
-    if(gFlags.pidTimer)
-    {
-      referenceValue = Get_Reference();
-      measurementValue = Get_Measurement();
-
-      inputValue = pid_Controller(referenceValue, measurementValue, &pidData);
-
-      Set_Input(inputValue);
-
-      gFlags.pidTimer = FALSE;
-    }
 
    */            
   }

@@ -23,6 +23,12 @@
 
 
 void Timer0_init();
+void InitTimer();
+
+
+// Boolean values
+#define FALSE           0
+#define TRUE            1
 
 
 #endif // TIMER_H
