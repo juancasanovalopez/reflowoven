@@ -20,7 +20,7 @@ void USART_Init( unsigned int baudrate )
 	
 	/* Set frame format: 8 data 1stop */
 	//UCSRC = (1<<UCSZ1)|(1<<UCSZ0);              //For devices with Extended IO
-	UCSRC = (1<<URSEL)|(1<<UCSZ0);   //For devices without Extended IO
+	UCSRC = (1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0);   //For devices without Extended IO
 }
 
 
