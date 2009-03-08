@@ -57,7 +57,7 @@ int16_t temp;
  * need to be modified to adapt to the application at hand
  */
 //! \xrefitem todo "Todo" "Todo list"
-#define K_P     3.00
+#define K_P     20.00
 //! \xrefitem todo "Todo" "Todo list"
 #define K_I     0.00
 //! \xrefitem todo "Todo" "Todo list"
@@ -138,7 +138,7 @@ void Set_Input(int16_t inputValue)
   outputVal[0] = inputValue;
   outputVal[1] = inputValue;
   outputVal[2] = inputValue;
-  outputVal[3] = 50;
+  outputVal[3] = 100;
 }
 
 
@@ -201,6 +201,9 @@ int main (void)
 
       Set_Input(inputValue);
 
+	  USART_Transmit((temp >> 2) & 0x00FF);
+	  //USART_Transmit('G');
+
 	  updatePID = FALSE;
 
     }
@@ -254,7 +257,7 @@ int main (void)
 
 	//uart_putc('T');
     //USART_Transmit('T');
-	//USART_Transmit((temp >> 2) & 0x00FF);
+	
 	//USART_Transmit(temp & 0x00FF);
 	//uart_putc(10);
 	//uart_putc(20);
