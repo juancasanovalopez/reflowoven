@@ -57,11 +57,11 @@ int16_t temp;
  * need to be modified to adapt to the application at hand
  */
 //! \xrefitem todo "Todo" "Todo list"
-#define K_P     20.00
+#define K_P     4.00
 //! \xrefitem todo "Todo" "Todo list"
 #define K_I     0.00
 //! \xrefitem todo "Todo" "Todo list"
-#define K_D     0.00
+#define K_D     00.00
 
 /*! \brief Flags for status information
  */
