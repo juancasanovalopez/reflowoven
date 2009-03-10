@@ -50,9 +50,11 @@ typedef struct PID_DATA{
  * Needed to avoid sign/overflow problems
  */
 // Maximum value of variables
-#define MAX_INT         INT16_MAX
+//#define MAX_INT         INT16_MAX
+#define MAX_INT         (100 * SCALING_FACTOR)
 #define MAX_LONG        INT32_MAX
-#define MAX_I_TERM      (MAX_LONG / 2)
+//#define MAX_I_TERM      (MAX_LONG / 2)
+#define MAX_I_TERM      (100 * SCALING_FACTOR)
 
 // Boolean values
 #define FALSE           0

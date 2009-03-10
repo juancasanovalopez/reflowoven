@@ -9,7 +9,7 @@
 
 #define SPI_DDR    DDRB
 
-#define SS_BIT     PB2
+#define SS_BIT     PB1
 #define MOSI_BIT   PB3
 
 #define SCK_BIT    PB5
