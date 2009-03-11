@@ -57,11 +57,11 @@ int16_t temp;
  * need to be modified to adapt to the application at hand
  */
 //! \xrefitem todo "Todo" "Todo list"
-#define K_P     4.00
+#define K_P     5.00
 //! \xrefitem todo "Todo" "Todo list"
-#define K_I     0.00
+#define K_I     0.40
 //! \xrefitem todo "Todo" "Todo list"
-#define K_D     00.00
+#define K_D     20.00
 
 /*! \brief Flags for status information
  */
@@ -108,7 +108,7 @@ __interrupt void TIMER0_OVF_ISR( void )
  */
 int16_t Get_Reference(void)
 {
-  return temperaturVal;
+  return temperaturVal * 4;
 }
 
 /*! \brief Read system process value
@@ -117,7 +117,7 @@ int16_t Get_Reference(void)
  */
 int16_t Get_Measurement(void)
 {
-  return temp / 4;
+  return temp;
 }
 
 /*! \brief Set control input to system
