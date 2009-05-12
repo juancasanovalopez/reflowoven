@@ -74,7 +74,7 @@ ISR(TIMER0_OVF_vect)
 void Timer0_init()
 {
 	// Timer0 settings: ~ 159744 ticks (9.984 ms)
-	TCCR0 = (1<<CS02) | (1<<CS00); // prescaler = 1024
+	TCCR0 = (1<<CS02) ; // prescaler = 256
 	// init counter
 	TCNT0 = 100;
 	TIMSK = (1<<TOIE0); // Timer0 Overflow Interrupt Enable

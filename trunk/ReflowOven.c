@@ -43,8 +43,10 @@ int16_t temperaturVal;
 
 uint8_t updatePID;
 
-uint8_t outputVal[MAX_OUTPUT] = {20,40,60,80};
+uint8_t outputVal[MAX_OUTPUT] = {0,0,0,0};
 uint8_t outputPin[MAX_OUTPUT] = {4,5,6,7};
+
+#define FAN_POWER 30
 
 int16_t temp;
 
@@ -59,9 +61,9 @@ int16_t temp;
 //! \xrefitem todo "Todo" "Todo list"
 #define K_P     5.00
 //! \xrefitem todo "Todo" "Todo list"
-#define K_I     0.40
+#define K_I     0.15
 //! \xrefitem todo "Todo" "Todo list"
-#define K_D     20.00
+#define K_D     1.00
 
 /*! \brief Flags for status information
  */
@@ -134,11 +136,11 @@ void Set_Input(int16_t inputValue)
   if(inputValue < 0)
     inputValue = 0;
 
-
-  outputVal[0] = inputValue;
+  outputVal[0] = FAN_POWER;
   outputVal[1] = inputValue;
   outputVal[2] = inputValue;
-  outputVal[3] = 100;
+  outputVal[3] = inputValue;
+
 }
 
 
